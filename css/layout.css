@@ -1,0 +1,109 @@
+/* css/layout.css */
+
+/* Grid Principal (Sidebar Fixa + Conteúdo) */
+.app-container {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    height: 100vh;
+}
+
+/* --- SIDEBAR --- */
+.sidebar {
+    background: var(--bg-surface);
+    border-right: 1px solid var(--border);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 5;
+}
+
+.logo { 
+    font-size: 1.5rem; 
+    font-weight: 800; 
+    letter-spacing: -1px; 
+    margin-bottom: 3rem; 
+}
+.dot { color: var(--primary); }
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    color: var(--text-sec);
+    text-decoration: none;
+    border-radius: 12px;
+    transition: 0.2s;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+.nav-item:hover, .nav-item.active {
+    background: var(--primary-light);
+    color: var(--primary);
+}
+.nav-item .material-icons-round { font-size: 1.4rem; }
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+}
+.avatar {
+    width: 40px; height: 40px; 
+    background: var(--text-main); color: white;
+    border-radius: 50%; display: flex; 
+    align-items: center; justify-content: center; 
+    font-weight: 700;
+}
+.info p { font-size: 0.85rem; }
+.info .name { font-weight: 700; }
+.info .role { color: var(--text-sec); }
+
+/* --- ÁREA DE CONTEÚDO --- */
+.content-area {
+    padding: 2rem 3rem;
+    overflow-y: auto; /* Scroll apenas aqui dentro */
+    position: relative;
+}
+
+.top-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 2.5rem; 
+}
+.top-header h1 { font-size: 1.8rem; }
+.subtitle { color: var(--text-sec); font-size: 0.95rem; }
+
+/* Ajuste do Perfil na Sidebar */
+.user-profile {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Separa info do botão */
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    margin-top: auto; /* Empurra para o rodapé da sidebar */
+}
+
+/* Estilo do botão de engrenagem */
+#btn-config-api {
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 0.4rem;
+    color: var(--text-sec);
+    cursor: pointer;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#btn-config-api:hover {
+    background: #FFF0F5; /* Rosa claro */
+    color: var(--primary);
+    border-color: #fce4ec;
+}

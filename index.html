@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacka | Enterprise Event Management</title>
+    
+    <!-- Carregando CSS Modular -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/views.css">
+    
+    <!-- Fontes e Ícones -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar (Estática) -->
+        <aside class="sidebar">
+            <div class="logo">Hacka<span class="dot">.</span></div>
+            <nav id="main-nav">
+                <!-- Injetado via JS -->
+            </nav>
+            <div class="user-profile">
+                <div class="avatar">RM</div>
+                <div class="info"><p class="name">Rhuan M.</p><p class="role">Admin</p></div>
+            </div>
+        </aside>
+
+        <!-- Área Dinâmica (O Router controla isso) -->
+        <main class="content-area" id="app-root">
+            <!-- As Views (Dashboard/Wizard) serão injetadas aqui pelo JS -->
+        </main>
+    </div>
+
+    <!-- Ponto de Entrada da Aplicação -->
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>

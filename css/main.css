@@ -1,0 +1,39 @@
+/* css/main.css */
+:root {
+    /* Paleta de Cores */
+    --primary: #FF4081;          /* Rosa Vibrante (Ação Principal) */
+    --primary-hover: #E91E63;    /* Rosa Escuro (Hover) */
+    --primary-light: #FFF0F5;    /* Fundo Rosa Claro (Badges/Selects) */
+    
+    /* Neutros e Textos */
+    --text-main: #1A1C1E;        /* Preto Suave */
+    --text-sec: #6C757D;         /* Cinza Texto Secundário */
+    
+    /* Fundos e Bordas */
+    --bg-app: #F4F6F8;           /* Fundo Geral da Aplicação */
+    --bg-surface: #FFFFFF;       /* Fundo de Cards e Sidebar */
+    --border: #E0E0E0;           /* Bordas Sutis */
+    
+    /* Dimensões e Efeitos */
+    --radius: 20px;              /* Arredondamento Padrão */
+    --shadow-sm: 0 4px 20px rgba(0,0,0,0.03); /* Sombra Leve */
+    --shadow-hover: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* Reset Universal */
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: 'Plus Jakarta Sans', sans-serif; 
+}
+
+body { 
+    background: var(--bg-app); 
+    color: var(--text-main); 
+    height: 100vh; 
+    overflow: hidden; /* Evita scroll duplo na página inteira */
+}
+
+/* Classes Utilitárias */
+.hidden { display: none !important; }
