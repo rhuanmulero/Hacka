@@ -1,7 +1,8 @@
 // js/modules/wizard.js
 import { navigateTo } from '../core/router.js';
 import { saveEvent } from '../core/state.js';
-import { generateEventStrategy } from './ai.js'; // Importando a IA Real
+import { generateEventStrategy } from './ai.js';
+import { autoCreateTasksFromStrategy } from '../core/state.js';
 
 let currentStep = 1;
 const totalSteps = 5;
@@ -278,21 +279,26 @@ async function executeAI() {
 function saveAndExit() {
     // Título inteligente
     const title = formData.topic ? formData.topic : `${formData.type} - ${formData.objective}`;
+    const newEventId = Date.now(); // Gera ID único
     
+    // 1. Salva o Evento
     saveEvent({
+        id: newEventId, // Força o ID gerado
         topic: title,
         type: formData.type,
         audience: formData.target || 'Geral',
-        date: formData.date || new Date().toISOString(), // Garante data
-        // O IMPORTANTE ESTÁ AQUI:
-        // Se a IA gerou HTML, salvamos em fullStrategy.
-        // Se não, colocamos um aviso.
+        date: formData.date || new Date().toISOString(),
         fullStrategy: formData.strategyHTML || '<p>Erro: Estratégia não salva.</p>',
-        
-        // Dados brutos para referência futura
         raw: formData
     });
+
+    // 2. MÁGICA: Converte a Estratégia em Tasks do Kanban
+    // (Certifique-se de ter importado autoCreateTasksFromStrategy no topo do arquivo)
+    if (formData.strategyHTML) {
+        autoCreateTasksFromStrategy(newEventId, formData.strategyHTML);
+    }
     
-    // Redireciona para a nova aba de eventos
-    window.navTo('agenda');
+    // 3. Redireciona para o Kanban
+    window.navTo('tasks'); 
 }
+

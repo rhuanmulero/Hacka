@@ -11,10 +11,12 @@
 .sidebar {
     background: var(--bg-surface);
     border-right: 1px solid var(--border);
-    padding: 2rem;
+    padding: 1.5rem; 
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    height: 100vh; 
+    overflow: hidden; 
+    position: relative;
     z-index: 5;
 }
 
@@ -22,35 +24,136 @@
     font-size: 1.5rem; 
     font-weight: 800; 
     letter-spacing: -1px; 
-    margin-bottom: 3rem; 
+    margin-bottom: 2rem; 
+    flex-shrink: 0; /* Impede que o logo seja esmagado */
 }
+
 .dot { color: var(--primary); }
 
+/* --- ITEM DE MENU PRINCIPAL --- */
 .nav-item {
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding: 1rem;
+    padding: 0.8rem 1rem;
     color: var(--text-sec);
     text-decoration: none;
     border-radius: 12px;
-    transition: 0.2s;
-    margin-bottom: 0.5rem;
+    transition: all 0.2s ease;
+    margin-bottom: 0.2rem;
     font-weight: 500;
+    position: relative;
+    cursor: pointer; /* Garante a mãozinha no mouse */
 }
-.nav-item:hover, .nav-item.active {
+
+/* Ícone com transição independente */
+.nav-item .material-icons-round {
+    font-size: 1.4rem;
+    color: inherit;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+/* --- ESTADO ACTIVE (Selecionado) --- */
+.nav-item.active {
     background: var(--primary-light);
     color: var(--primary);
+    font-weight: 600;
 }
-.nav-item .material-icons-round { font-size: 1.4rem; }
 
-.user-profile {
+/* --- ESTADO HOVER (Passar o mouse) --- */
+.nav-item:hover:not(.active) {
+    background: #f8f9fa; /* Cinza sutil */
+    color: var(--text-main);
+}
+
+/* O "Charme": Ícone fica rosa e move levemente */
+.nav-item:hover:not(.active) .material-icons-round {
+    color: var(--primary);
+    transform: translateX(2px);
+}
+
+/* --- SUB-MENUS (Accordion) --- */
+.sub-nav-item {
+    padding: 0.6rem 1rem 0.6rem 2.5rem; /* 2.5rem de esquerda para indentar */
+    color: var(--text-sec);
+    text-decoration: none;
+    font-size: 0.9rem;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     gap: 0.8rem;
+    transition: all 0.2s ease;
+    margin-bottom: 2px;
+    cursor: pointer;
+}
+
+.sub-nav-item.active {
+    background: rgba(255, 64, 129, 0.05); /* Rosa bem clarinho */
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.sub-nav-item:hover:not(.active) {
+    background: transparent; /* Submenu fica melhor sem fundo no hover */
+    color: var(--text-main);
+}
+
+.sub-nav-item:hover:not(.active) .material-icons-round {
+    color: var(--primary);
+    transform: translateX(3px);
+}
+
+.sub-nav-item .material-icons-round { 
+    font-size: 1.1rem; /* Ícone do submenu é um pouco menor */
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+/* Seta do Accordion */
+.nav-arrow {
+    margin-left: auto; /* Empurra para a direita */
+    font-size: 1.2rem;
+    transition: transform 0.2s;
+}
+.nav-item.open .nav-arrow {
+    transform: rotate(180deg);
+}
+
+/* --- ÁREA DE NAVEGAÇÃO (O MEIO) --- */
+#main-nav {
+    flex: 1; /* Mágica: Ocupa todo o espaço sobrando */
+    overflow-y: auto; /* Cria scroll SÓ aqui se precisar */
+    margin-bottom: 1rem; /* Espaço antes do perfil */
+    padding-right: 5px; /* Evita que o scroll corte ícones */
+    
+    /* Esconde a barra de rolagem nativa feia (Opcional, mas recomendado) */
+    scrollbar-width: thin;
+    scrollbar-color: #e0e0e0 transparent;
+}
+
+/* Estilo do Scrollbar para Webkit (Chrome/Edge/Safari) */
+#main-nav::-webkit-scrollbar {
+    width: 4px;
+}
+#main-nav::-webkit-scrollbar-track {
+    background: transparent;
+}
+#main-nav::-webkit-scrollbar-thumb {
+    background-color: #e0e0e0;
+    border-radius: 20px;
+}
+
+/* --- PERFIL (O RODAPÉ) --- */
+.user-profile {
+    flex-shrink: 0; /* Impede que o perfil suma ou encolha */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding-top: 1rem;
     border-top: 1px solid var(--border);
+    margin-top: auto; /* Garante empurrão para baixo */
+    background: var(--bg-surface); /* Garante que o fundo cubra itens */
 }
+
 .avatar {
     width: 40px; height: 40px; 
     background: var(--text-main); color: white;
@@ -107,3 +210,61 @@
     color: var(--primary);
     border-color: #fce4ec;
 }
+
+/* Estilo para Cabeçalhos de Grupo (Categorias) */
+.nav-group-label {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #aaa;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin: 1.5rem 0 0.5rem 1rem;
+    pointer-events: none; /* Não clicável */
+}
+
+/* Item de Menu com Submenu (Pai) */
+.nav-has-submenu {
+    cursor: pointer;
+    justify-content: space-between;
+}
+.nav-arrow {
+    font-size: 1.2rem;
+    transition: transform 0.2s;
+}
+.nav-has-submenu.open .nav-arrow {
+    transform: rotate(180deg);
+}
+
+/* Container dos Filhos */
+.submenu-container {
+    display: none; /* Escondido por padrão */
+    flex-direction: column;
+    padding-left: 1rem; /* Indentação */
+    margin-bottom: 0.5rem;
+}
+.submenu-container.visible {
+    display: flex;
+    animation: slideDown 0.2s ease;
+}
+
+/* Item Filho (Submenu) */
+.sub-nav-item {
+    padding: 0.6rem 1rem;
+    color: var(--text-sec);
+    text-decoration: none;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    transition: 0.2s;
+    margin-bottom: 2px;
+}
+.sub-nav-item:hover, .sub-nav-item.active {
+    color: var(--primary);
+    background: rgba(255, 64, 129, 0.05);
+}
+.sub-nav-item .material-icons-round { font-size: 1.1rem; }
+
+@keyframes slideDown { from { opacity:0; transform:translateY(-5px); } to { opacity:1; transform:translateY(0); } }
+

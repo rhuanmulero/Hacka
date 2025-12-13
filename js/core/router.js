@@ -2,6 +2,17 @@ import { renderDashboard } from '../modules/dashboard.js';
 import { renderWizard } from '../modules/wizard.js';
 import { renderEvents } from '../modules/events.js';
 import { renderKanban } from '../modules/kanban.js'; 
+import { renderParticipants } from '../modules/participants.js';
+import { renderTickets } from '../modules/tickets.js';
+import { renderFinancial } from '../modules/financial.js';
+import { renderTeams } from '../modules/teams.js';
+import { renderMarketing } from '../modules/marketing.js';
+import { renderSuppliers } from '../modules/suppliers.js';
+import { renderAgendaBuilder } from '../modules/agenda.js';
+import { renderCheckin } from '../modules/checkin.js';
+import { renderCertificates } from '../modules/certificates.js';
+import { renderFeedback } from '../modules/feedback.js';
+import { renderExternal } from '../modules/external.js';
 
 const appRoot = document.getElementById('app-root');
 
@@ -18,26 +29,42 @@ export function navigateTo(route) {
         case 'wizard':
             renderWizard(appRoot);
             break;
-        
-        // Rotas Futuras (Placeholders)
         case 'participants':
-            renderConstruction(appRoot, 'Gestão de Participantes', 'people', 'Aqui você gerenciará inscrições, check-in e listas de presença.');
+            renderParticipants(appRoot);
             break;
+        case 'tickets':
+            renderTickets(appRoot);
+        break;
+        case 'schedule':
+            renderAgendaBuilder(appRoot);
+        break;
         case 'teams':
-            renderConstruction(appRoot, 'Times & Projetos', 'groups', 'Ferramentas para formação de equipes, submissão de projetos e avaliação de jurados.');
+            renderTeams(appRoot); 
             break;
         case 'tasks':
             renderKanban(appRoot);
         break;
         case 'financial':
-            renderConstruction(appRoot, 'Financeiro', 'payments', 'Controle de orçamento, patrocinadores, despesas e venda de ingressos.');
+            renderFinancial(appRoot);
             break;
         case 'marketing':
-            renderConstruction(appRoot, 'Marketing', 'campaign', 'Disparo de e-mails, posts sociais e tracking de conversão.');
-            break;
+            renderMarketing(appRoot);
+        break;
         case 'suppliers':
-            renderConstruction(appRoot, 'Fornecedores', 'store', 'Gestão de contratos, buffet, local e infraestrutura.');
-            break;
+            renderSuppliers(appRoot); 
+        break;
+        case 'checkin':
+            renderCheckin(appRoot);
+        break;
+        case 'certificates':
+            renderCertificates(appRoot);
+        break;
+        case 'feedback':
+            renderFeedback(appRoot);
+        break;
+        case 'external':
+            renderExternal(appRoot);
+        break;
             
         default:
             renderDashboard(appRoot);

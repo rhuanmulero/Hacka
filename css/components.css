@@ -307,3 +307,56 @@
     cursor: pointer;
     outline: none;
 }
+
+/* Adicione ao final de css/components.css */
+
+/* --- BARRA DE FILTROS --- */
+.filter-bar {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    background: #fff;
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    align-items: center;
+}
+
+.search-input-wrapper {
+    position: relative;
+    flex: 1; /* Ocupa o espaço restante */
+}
+
+.search-input-wrapper .material-icons-round {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-sec);
+    pointer-events: none;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.6rem 1rem 0.6rem 2.5rem; /* Espaço para o ícone */
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: 0.2s;
+}
+.search-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.filter-select {
+    padding: 0.6rem 2rem 0.6rem 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background: #fff;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--text-main);
+    outline: none;
+}

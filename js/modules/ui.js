@@ -1,30 +1,82 @@
+// js/modules/ui.js
 import { navigateTo } from '../core/router.js';
 
 export function renderSidebar() {
     const nav = document.getElementById('main-nav');
     
-    const menuItems = [
-        { id: 'dashboard', icon: 'dashboard', label: 'Visão Geral', active: true },
-        { id: 'agenda', icon: 'event_note', label: 'Meus Eventos', active: false },
-        { type: 'separator', label: 'GESTÃO' },
-        { id: 'participants', icon: 'people', label: 'Participantes', active: false },
-        { id: 'teams', icon: 'groups', label: 'Times & Projetos', active: false },
-        { id: 'tasks', icon: 'check_circle', label: 'Tarefas (Kanban)', active: false },
-        { id: 'financial', icon: 'payments', label: 'Financeiro', active: false },
-        { type: 'separator', label: 'MARKETING' },
-        { id: 'marketing', icon: 'campaign', label: 'Campanhas', active: false },
-        { id: 'suppliers', icon: 'store', label: 'Fornecedores', active: false },
+    // Nova Estrutura Hierárquica
+    const menuStructure = [
+        // GRUPO 1: PRINCIPAL
+        { type: 'link', id: 'dashboard', icon: 'dashboard', label: 'Visão Geral' },
+        { type: 'link', id: 'agenda', icon: 'event_note', label: 'Meus Eventos' },
+        { type: 'link', id: 'external', icon: 'badge', label: 'Minha Atuação' }, 
+        
+        // GRUPO 2: OPERAÇÃO
+        { type: 'label', label: 'OPERAÇÃO' },
+        { type: 'link', id: 'schedule', icon: 'schedule', label: 'Programação' },
+        { type: 'link', id: 'checkin', icon: 'qr_code_scanner', label: 'Portaria' },
+
+        // GRUPO 3: PESSOAS & VENDAS
+        { type: 'label', label: 'PESSOAS' },
+        { 
+            type: 'accordion', 
+            icon: 'groups', 
+            label: 'Participantes', 
+            id: 'group_people',
+            children: [
+                { id: 'participants', label: 'Lista Geral' },
+                { id: 'tickets', label: 'Ingressos' },
+                { id: 'teams', label: 'Times (Hacka)' },
+                { id: 'certificates', label: 'Certificados' }
+            ]
+        },
+
+        // GRUPO 4: GESTÃO
+        { type: 'label', label: 'BACKOFFICE' },
+        { 
+            type: 'accordion', 
+            icon: 'business_center', 
+            label: 'Gestão', 
+            id: 'group_management',
+            children: [
+                { id: 'financial', label: 'Financeiro' },
+                { id: 'tasks', label: 'Tarefas' },
+                { id: 'marketing', label: 'Campanhas' },
+                { id: 'feedback', label: 'Pesquisa NPS' },
+                { id: 'suppliers', label: 'Fornecedores' }
+            ]
+        }
     ];
 
     let html = '';
-    menuItems.forEach(item => {
-        if (item.type === 'separator') {
-            html += `<div style="margin: 1.5rem 0 0.5rem 1rem; font-size: 0.75rem; font-weight: 700; color: #aaa; letter-spacing: 1px;">${item.label}</div>`;
-        } else {
+    
+    menuStructure.forEach(item => {
+        if (item.type === 'label') {
+            html += `<div class="nav-group-label">${item.label}</div>`;
+        } 
+        else if (item.type === 'link') {
             html += `
-                <a href="#" class="nav-item ${item.active ? 'active' : ''}" id="nav-${item.id}" onclick="window.handleNav('${item.id}', this)">
+                <div class="nav-item" id="nav-${item.id}" onclick="window.handleNav('${item.id}', this)">
                     <span class="material-icons-round">${item.icon}</span> <span>${item.label}</span>
-                </a>
+                </div>
+            `;
+        }
+        else if (item.type === 'accordion') {
+            html += `
+                <div class="nav-item nav-has-submenu" onclick="window.toggleSubmenu('${item.id}', this)">
+                    <div style="display:flex; align-items:center; gap:1rem;">
+                        <span class="material-icons-round">${item.icon}</span> 
+                        <span>${item.label}</span>
+                    </div>
+                    <span class="material-icons-round nav-arrow">expand_more</span>
+                </div>
+                <div id="sub-${item.id}" class="submenu-container">
+                    ${item.children.map(child => `
+                        <div class="sub-nav-item" id="nav-${child.id}" onclick="window.handleNav('${child.id}', this)">
+                            <span class="material-icons-round">subdirectory_arrow_right</span> ${child.label}
+                        </div>
+                    `).join('')}
+                </div>
             `;
         }
     });
@@ -33,15 +85,49 @@ export function renderSidebar() {
     setupProfileConfig();
 }
 
+// --- LÓGICA DE NAVEGAÇÃO E MOBILE ---
+
 window.handleNav = (route, element) => {
-    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+    // Remove active de tudo
+    document.querySelectorAll('.nav-item, .sub-nav-item').forEach(el => el.classList.remove('active'));
+    
+    // Adiciona ao clicado
     element.classList.add('active');
+    
+    // Se for submenu, ilumina o pai
+    if(element.classList.contains('sub-nav-item')) {
+        element.parentElement.previousElementSibling.classList.add('active');
+    }
+
     navigateTo(route);
+
+    // [NOVO] Fecha o menu automaticamente se estiver no mobile
+    if (window.innerWidth <= 768) {
+        window.toggleMobileMenu();
+    }
+};
+
+window.toggleSubmenu = (id, element) => {
+    const container = document.getElementById(`sub-${id}`);
+    if (container) {
+        element.classList.toggle('open');
+        container.classList.toggle('visible');
+    }
+};
+
+// [NOVO] Função para abrir/fechar menu mobile
+window.toggleMobileMenu = () => {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.querySelector('.sidebar-overlay');
+    
+    if (sidebar && overlay) {
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('visible');
+    }
 };
 
 /* --- SISTEMA DE MODAIS GLOBAL --- */
 
-// Renderiza a estrutura base se não existir
 if (!document.getElementById('app-modal')) {
     const modalHTML = `
         <div id="app-modal" class="modal-overlay hidden">
@@ -74,7 +160,6 @@ window.closeModal = () => {
     setTimeout(() => modal.classList.add('hidden'), 300);
 };
 
-// Prompt Bonito
 window.promptModal = (title, label, callback) => {
     const body = `
         <label class="input-label">${label}</label>
@@ -95,36 +180,31 @@ window.promptModal = (title, label, callback) => {
             window.closeModal();
         }
     };
-    
-    // Enter para confirmar
     document.getElementById('modal-input').onkeydown = (e) => {
         if(e.key === 'Enter') document.getElementById('btn-confirm').click();
     };
 };
 
-// Confirm Bonito (Sim/Não) - NOVO
 window.confirmModal = (title, text, onConfirm) => {
     const body = `<p style="color:#555; line-height:1.5;">${text}</p>`;
     const footer = `
         <button onclick="window.closeModal()" class="btn-text">Cancelar</button>
         <button id="btn-yes" class="btn-create" style="background:#ef5350;">Sim, continuar</button>
     `;
-    
     window.openModal(title, body, footer);
-    
     document.getElementById('btn-yes').onclick = () => {
         window.closeModal();
         onConfirm();
     };
 };
 
-/* --- CONFIGURAÇÕES DO SISTEMA (MODAL) --- */
+/* --- CONFIGURAÇÕES E RESET --- */
 function setupProfileConfig() {
     const profileContainer = document.querySelector('.user-profile');
     if (!profileContainer) return;
 
     profileContainer.innerHTML = `
-        <div style="display:flex; align-items:center; gap:0.8rem; flex:1;">
+        <div style="display:flex; align-items:center; gap:0.8rem; flex:1; overflow:hidden;">
             <div class="avatar">RM</div>
             <div class="info">
                 <p class="name">Rhuan M.</p>
@@ -159,18 +239,21 @@ function setupProfileConfig() {
         
         window.openModal('Configurações', body);
 
-        // Ações dos botões
+        // Lógica da API Key
         document.getElementById('cfg-api').onclick = () => {
-            const current = localStorage.getItem('hacka_api_key') || '';
             window.promptModal('Configurar IA', 'Cole sua API Key do Google:', (key) => {
                 localStorage.setItem('hacka_api_key', key);
-                localStorage.removeItem('hacka_best_model'); // Limpa cache de modelo
-                alert('✅ Chave salva com sucesso!'); // Alert simples aqui é aceitável ou use toast futuro
+                localStorage.removeItem('hacka_best_model'); 
+                setTimeout(() => {
+                    window.openModal('Sucesso', '<div style="text-align:center; padding:1rem;">✅ Chave salva!</div>', 
+                    '<button onclick="window.closeModal()" class="btn-create" style="width:100%;">OK</button>');
+                }, 400); 
             });
         };
 
+        // [CORREÇÃO] Lógica do Reset (Estava faltando no seu código)
         document.getElementById('cfg-reset').onclick = () => {
-            window.confirmModal('Zona de Perigo', 'Isso apagará TODOS os seus eventos e tarefas. Não há como desfazer. Tem certeza?', () => {
+            window.confirmModal('Zona de Perigo', 'Isso apagará TODOS os dados permanentemente. Deseja continuar?', () => {
                 localStorage.clear();
                 location.reload();
             });

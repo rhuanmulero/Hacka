@@ -409,3 +409,77 @@
         height: auto;
     }
 }
+
+/* --- TABELAS DE DADOS (DATA GRID) --- */
+.table-container {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    overflow: hidden; /* Arredonda cantos da tabela */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.data-table th {
+    background: #f9fafb;
+    text-align: left;
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    color: #666;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.data-table td {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+    color: #333;
+    vertical-align: middle;
+}
+
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover { background: #fafafa; }
+
+/* Componentes da Tabela */
+.avatar-small {
+    width: 32px; height: 32px;
+    background: var(--primary-light);
+    color: var(--primary);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 0.9rem;
+}
+
+.badge-role {
+    background: #f0f0f0;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: #555;
+    font-weight: 500;
+}
+
+.badge-status {
+    padding: 0.3rem 0.8rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.btn-icon-small {
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    padding: 0.3rem;
+    border-radius: 6px;
+    color: #888;
+    transition: 0.2s;
+}
+.btn-icon-small:hover { background: #eee; color: #333; }
+.btn-icon-small.delete:hover { background: #ffebee; color: #d32f2f; }
+.btn-icon-small .material-icons-round { font-size: 1.2rem; }
